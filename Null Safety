@@ -1,0 +1,5 @@
+#null이 될 수 없는 변수
+String name = '개발하는남자';
+
+#null이 될 수 있는 변수
+String? bookName;
