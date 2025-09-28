@@ -1,0 +1,15 @@
+#숫자 타입(형변환)
+int age = 37;
+double height = 175.5;
+
+int a = age.toInt();
+double b = age.toDouble();
+
+#문자열 타입
+var greeting = 'Hello';
+var name = "World":
+
+var multiLine = '''
+여러 줄
+문자열
+''';
