@@ -1,0 +1,16 @@
+#ListView - 스크롤 가능한 목록
+ListView(
+  scrollDirection: Axis.vertical,
+  children: [...],
+)
+#GridView - 그리드 레이아웃
+GridView(
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 3,
+  ),
+  children: [...],
+)
+#PageView - 페이지 단위 스크롤
+PageView(
+  children: [...],
+)
