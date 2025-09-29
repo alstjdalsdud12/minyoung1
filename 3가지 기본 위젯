@@ -1,0 +1,24 @@
+#StatelessWidget
+# 불변 위젯 - 상태가 변하지 않음
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text('Hello');
+  }
+}
+#StatefulWidget
+# 가변 위젯 - 상태 변경 가능
+class MyWidget extends StatefulWidget {
+  @override
+  _MyWidgetState createState() => _MyWidgetState();
+}
+class _MyWidgetState extends State<MyWidget> {
+  int counter = 0;
+  
+  void increment() {
+    setState(() {
+      counter++;
+    });
+  }
+}
+#InheritedWidget
