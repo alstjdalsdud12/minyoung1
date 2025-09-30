@@ -1,0 +1,19 @@
+#투명도 애니메이션
+AnimatedOpacity(
+  duration: Duration(seconds: 1),
+  opacity: isVisible ? 1.0 : 0.0,
+  child: Widget(),
+)
+#위치 애니메이션
+AnimatedPositioned(
+  duration: Duration(milliseconds: 500),
+  left: position,
+  child: Widget(),
+)
+#컨테이너 애니메이션
+AnimatedContainer(
+  duration: Duration(milliseconds: 300),
+  width: size,
+  height: size,
+  color: color,
+)
