@@ -1,11 +1,11 @@
-// 페이지 이동
+#페이지 이동
 Navigator.pushNamed(context, '/second');
 
-// 뒤로 가기
+#뒤로 가기
 Navigator.pop(context);
 
-// 페이지 교체
+#페이지 교체
 Navigator.pushReplacementNamed(context, '/home');
 
-// 특정 경로까지 돌아가기
+#특정 경로까지 돌아가기
 Navigator.popUntil(context, ModalRoute.withName('/'));
