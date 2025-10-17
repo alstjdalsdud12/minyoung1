@@ -1,0 +1,23 @@
+void main() {
+  var author = '개발하는'; {
+    print(author);
+  }
+}
+
+void main() {
+  String author = '남자'; {
+    print(author);
+  }
+}
+
+void main() {
+  int age = 37; {
+    print(age);
+  }
+}
+
+void main() {
+  double height = 175.5; {
+    print(height);
+  }
+}
