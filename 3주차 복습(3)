@@ -1,1 +1,5 @@
-
+#Set(중복불가)
+void main() {
+  var nums = <int>{1,1,2,2,3,3};
+  print(nums);
+}
