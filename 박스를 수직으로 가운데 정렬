@@ -1,0 +1,26 @@
+// 위젯을 반환하는 함수 createS1 정의
+Widget createS1() {
+  // Column 위젯을 반환
+  return Column(
+    // Column의 자식들을 수직 방향으로 가운데 정렬
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      // 첫 번째 Container: 빨간색 배경, 너비 100, 높이 40
+      Container(
+        color: Colors.red, // 배경색을 빨간색으로 설정
+        width: 100,        // 너비를 100픽셀로 설정
+        height: 40,        // 높이를 40픽셀로 설정
+      ),
+      // 첫 번째와 두 번째 Container 사이의 간격을 위한 SizedBox
+      const SizedBox(
+        height: 10, // 두 컨테이너 사이에 10픽셀의 수직 간격 추가
+      ),
+      // 두 번째 Container: 파란색 배경, 너비 100, 높이 40
+      Container(
+        color: Colors.blue, // 배경색을 파란색으로 설정
+        width: 100,         // 너비를 100픽셀로 설정
+        height: 40,         // 높이를 40픽셀로 설정
+      ),
+    ],
+  );
+}
