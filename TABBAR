@@ -1,0 +1,29 @@
+ Widget createS4() {
+    return Column(
+      children: [
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              Container(
+                color: Colors.blue,
+                child: const Center(child: Text('메뉴 1 페이지')),
+              ),
+              Container(
+                color: Colors.orange,
+                child: const Center(child: Text('메뉴 2 페이지')),
+              ),
+              Container(
+                color: Colors.green,
+                child: const Center(child: Text('메뉴 3 페이지')),
+              ),
+            ],
+          ),
+        ),
+        TabBar(
+          controller: _tabController,
+          tabs: const [Text('메뉴1'), Text('메뉴1'), Text('메뉴1')],
+        ),
+      ],
+    );
+  }
