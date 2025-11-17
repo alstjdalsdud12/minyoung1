@@ -1,0 +1,29 @@
+  Widget createS6() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 1000),
+          width: opacity ? 100 : 150,
+          height: opacity ? 100 : 150,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: opacity ? Colors.red : Colors.blue,
+          ),
+          onEnd: () {
+            print('asdfasdf');
+          },
+        ),
+        Center(
+          child: ElevatedButton(
+            onPressed: () {
+              opacity = !opacity;
+              setState(() {});
+            },
+            child: Text('변경하기'),
+          ),
+        ),
+      ],
+    );
+  }
+}
