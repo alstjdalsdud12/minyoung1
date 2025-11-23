@@ -1,0 +1,356 @@
+//main.dart
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'app.dart';
+import 'firebase_options.dart';
+
+late SharedPreferences prefs;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  prefs = await SharedPreferences.getInstance();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: '당근마켓 클론 코딩',
+      initialRoute: '/',
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          color: Color(0xff212123),
+          titleTextStyle: TextStyle(color: Colors.white),
+        ),
+        scaffoldBackgroundColor: const Color(0xff212123),
+      ),
+      getPages: [GetPage(name: '/', page: () => const App())],
+    );
+  }
+}
+===================================================================================================
+//app.dart
+
+//import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
+import 'package:bamtol_market_app/main.dart';
+import 'package:bamtol_market_app/src/init/page/init_start_page.dart';
+import 'package:bamtol_market_app/src/splash/page/splash_page.dart';
+import 'package:flutter/material.dart';
+
+class App extends StatefulWidget {
+  const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  late bool isInitStarted;
+  //int count = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    isInitStarted = prefs.getBool('isInitStarted') ?? true;
+    //count = prefs.getInt('counter') ?? 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return isInitStarted
+        ? InitStartPage(
+            onStart: () {
+              setState(() {
+                isInitStarted = false;
+              });
+              prefs.setBool('isInitStarted', isInitStarted);
+            },
+          )
+        : const SplashPage();
+  }
+
+  /*
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          count.toString(),
+          style: const TextStyle(fontSize: 80, color: Colors.white),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          setState(() {
+            count++;
+          });
+          await prefs.setInt('counter', count);
+        },
+      ),
+    );
+  }
+  */
+}
+===================================================================================================
+//init_start_page.dart
+
+import 'package:bamtol_market_app/src/common/components/app_font.dart';
+import 'package:bamtol_market_app/src/common/components/btn.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class InitStartPage extends StatelessWidget {
+  final Function() onStart;
+  const InitStartPage({super.key, required this.onStart});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 99,
+              height: 116,
+              child: Image.asset('assets/images/logo_simbol.png'),
+            ),
+            const SizedBox(height: 40),
+            const AppFont('당신 근처의 밤톨마켓', fontWeight: FontWeight.bold, size: 20),
+            const SizedBox(height: 15),
+            AppFont(
+              '중고 거래부터 동네 정보까지, \n지금 내 동네를 선택하고 시작해보세요!',
+              align: TextAlign.center,
+              size: 18,
+              color: Colors.white.withOpacity(0.6),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          left: 25,
+          right: 25,
+          bottom: 25 + Get.mediaQuery.padding.bottom,
+        ),
+        child: Btn(
+          onTap: onStart,
+          child: const AppFont(
+            '시작하기',
+            align: TextAlign.center,
+            size: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        /*
+        child: GestureDetector(
+          onTap: () {},
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(7),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              color: const Color(0xffED7738),
+              child: const AppFont(
+                '시작하기',
+                align: TextAlign.center,
+                size: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        */
+      ),
+    );
+  }
+}
+===================================================================================================
+//dtn.dart
+
+import 'package:bamtol_market_app/src/common/components/app_font.dart';
+import 'package:flutter/material.dart';
+
+class Btn extends StatelessWidget {
+  final Widget child;
+  final Function() onTap;
+  const Btn({super.key, required this.child, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(7),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          color: const Color(0xffED7738),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+===================================================================================================
+//app_font.dart
+
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class AppFont extends StatelessWidget {
+  final String text;
+  final Color? color;
+  final double? size;
+  final TextAlign? align;
+  final FontWeight? fontWeight;
+
+  const AppFont(
+    this.text, {
+    super.key,
+    this.color = Colors.white,
+    this.align,
+    this.size,
+    this.fontWeight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      textAlign: align,
+      style: GoogleFonts.notoSans(
+        color: color,
+        fontSize: size,
+        fontWeight: fontWeight,
+      ),
+    );
+  }
+}
+===================================================================================================
+//splash_page.dart
+
+import 'package:flutter/material.dart';
+
+class SplashPage extends StatelessWidget {
+  const SplashPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('splash 페이지', style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+}
+==================================================================================================
+//pubsqec.yaml
+
+name: bamtol_market_app
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  get: ^4.7.2
+  flutter_svg: ^2.2.2
+  equatable: ^2.0.7
+  google_fonts: ^6.3.2
+  firebase_core: ^4.2.1
+  firebase_auth: ^6.1.2
+  cloud_firestore: ^6.1.0
+  firebase_storage: ^13.0.4
+  shared_preferences: ^2.5.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^5.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
+assets:
+- assets/images/
+- assets/svg/
+- assets/svg/icons/
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
